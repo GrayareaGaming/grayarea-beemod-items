@@ -1,0 +1,325 @@
+versioninfo
+{
+	"editorversion" "400"
+	"editorbuild" "8869"
+	"mapversion" "349"
+	"formatversion" "100"
+	"prefab" "0"
+}
+visgroups
+{
+}
+viewsettings
+{
+	"bSnapToGrid" "1"
+	"bShowGrid" "1"
+	"bShowLogicalGrid" "0"
+	"nGridSpacing" "1"
+}
+palette_plus
+{
+	"color0" "255 255 255"
+	"color1" "255 255 255"
+	"color2" "255 255 255"
+	"color3" "255 255 255"
+	"color4" "255 255 255"
+	"color5" "255 255 255"
+	"color6" "255 255 255"
+	"color7" "255 255 255"
+	"color8" "255 255 255"
+	"color9" "255 255 255"
+	"color10" "255 255 255"
+	"color11" "255 255 255"
+	"color12" "255 255 255"
+	"color13" "255 255 255"
+	"color14" "255 255 255"
+	"color15" "255 255 255"
+}
+colorcorrection_plus
+{
+	"name0" ""
+	"weight0" "1"
+	"name1" ""
+	"weight1" "1"
+	"name2" ""
+	"weight2" "1"
+	"name3" ""
+	"weight3" "1"
+}
+light_plus
+{
+	"samples_sun" "6"
+	"samples_ambient" "40"
+	"samples_vis" "256"
+	"texlight" ""
+	"incremental_delay" "0"
+	"bake_dist" "1024"
+	"radius_scale" "1"
+	"brightness_scale" "1"
+	"ao_scale" "0"
+	"bounced" "1"
+	"incremental" "1"
+	"supersample" "0"
+	"bleed_hack" "1"
+	"soften_cosine" "0"
+	"debug" "0"
+	"cubemap" "1"
+}
+postprocess_plus
+{
+	"enable" "1"
+	"copied_from_controller" "1"
+	"bloom_scale" "1"
+	"bloom_exponent" "2.5"
+	"bloom_saturation" "1"
+	"auto_exposure_min" "0.5"
+	"auto_exposure_max" "2"
+	"tonemap_percent_target" "60"
+	"tonemap_percent_bright_pixels" "2"
+	"tonemap_min_avg_luminance" "3"
+	"tonemap_rate" "1"
+	"vignette_enable" "1"
+	"vignette_start" "1"
+	"vignette_end" "2"
+	"vignette_blur" "0"
+}
+bgimages_plus
+{
+}
+world
+{
+	"id" "1"
+	"mapversion" "349"
+	"classname" "worldspawn"
+	"detailmaterial" "detail/detailsprites"
+	"detailvbsp" "detail.vbsp"
+	"maxblobcount" "250"
+	"maxpropscreenwidth" "-1"
+	"skyname" "sky_black_nofog"
+}
+entity
+{
+	"id" "1376"
+	"classname" "env_portal_laser"
+	"angles" "0 0 0"
+	"AutoAimEnabled" "1"
+	"drawinfastreflection" "1"
+	"model" "models/editor/axis_helper.mdl"
+	"renderamt" "255"
+	"rendercolor" "255 255 255"
+	"rendermode" "10"
+	"skin" "0"
+	"solid" "0"
+	"StartState" "1"
+	"targetname" "cube_addon_emitter"
+	"origin" "28 0 0"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+entity
+{
+	"id" "3090"
+	"classname" "func_brush"
+	"disableflashlight" "0"
+	"disablereceiveshadows" "0"
+	"disableshadowdepth" "0"
+	"disableshadows" "0"
+	"drawinfastreflection" "0"
+	"InputFilter" "0"
+	"invert_exclusion" "0"
+	"origin" "26.48 0.01 0.01"
+	"parentname" "box"
+	"renderamt" "255"
+	"rendercolor" "255 255 255"
+	"renderfx" "0"
+	"rendermode" "10"
+	"shadowdepthnocache" "0"
+	"solidbsp" "0"
+	"Solidity" "2"
+	"spawnflags" "2"
+	"StartDisabled" "0"
+	"targetname" "cube_addon_blocker"
+	"vrad_brush_cast_shadows" "0"
+	connections
+	{
+		"OnUser1" "cube_addon_catcher_$group_$ind_$next_$connectioncount_$ead_$esd_$cad_$csdCallScriptFunctionspawn0-1"
+		"OnUser2" "cube_addon_catcher_$group_$ind_$next_$connectioncount_$ead_$esd_$cad_$csdCallScriptFunctiondroppered0-1"
+	}
+	solid
+	{
+		"id" "3088"
+		side
+		{
+			"id" "180"
+			"plane" "(26 1 1) (27 1 1) (27 -1 1)"
+			vertices_plus
+			{
+				"v" "26 1 1"
+				"v" "27 1 1"
+				"v" "27 -1 1"
+				"v" "26 -1 1"
+			}
+			"material" "DEV/DEV_TVMONITOR1A"
+			"uaxis" "[1 0 0 -5] 0.25"
+			"vaxis" "[0 -1 0 2] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "179"
+			"plane" "(26 -1 -1) (27 -1 -1) (27 1 -1)"
+			vertices_plus
+			{
+				"v" "26 -1 -1"
+				"v" "27 -1 -1"
+				"v" "27 1 -1"
+				"v" "26 1 -1"
+			}
+			"material" "DEV/DEV_TVMONITOR1A"
+			"uaxis" "[1 0 0 -5] 0.25"
+			"vaxis" "[0 -1 0 2] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "178"
+			"plane" "(26 1 1) (26 -1 1) (26 -1 -1)"
+			vertices_plus
+			{
+				"v" "26 1 1"
+				"v" "26 -1 1"
+				"v" "26 -1 -1"
+				"v" "26 1 -1"
+			}
+			"material" "DEV/DEV_TVMONITOR1A"
+			"uaxis" "[0 1 0 -2] 0.25"
+			"vaxis" "[0 0 -1 -2] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "177"
+			"plane" "(27 1 -1) (27 -1 -1) (27 -1 1)"
+			vertices_plus
+			{
+				"v" "27 1 -1"
+				"v" "27 -1 -1"
+				"v" "27 -1 1"
+				"v" "27 1 1"
+			}
+			"material" "DEV/DEV_TVMONITOR1A"
+			"uaxis" "[0 1 0 -2] 0.25"
+			"vaxis" "[0 0 -1 -2] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "176"
+			"plane" "(27 1 1) (26 1 1) (26 1 -1)"
+			vertices_plus
+			{
+				"v" "27 1 1"
+				"v" "26 1 1"
+				"v" "26 1 -1"
+				"v" "27 1 -1"
+			}
+			"material" "DEV/DEV_TVMONITOR1A"
+			"uaxis" "[1 0 0 -5] 0.25"
+			"vaxis" "[0 0 -1 -2] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "175"
+			"plane" "(27 -1 -1) (26 -1 -1) (26 -1 1)"
+			vertices_plus
+			{
+				"v" "27 -1 -1"
+				"v" "26 -1 -1"
+				"v" "26 -1 1"
+				"v" "27 -1 1"
+			}
+			"material" "DEV/DEV_TVMONITOR1A"
+			"uaxis" "[1 0 0 -5] 0.25"
+			"vaxis" "[0 0 -1 -2] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 2000]"
+	}
+}
+entity
+{
+	"id" "3119"
+	"classname" "point_laser_target"
+	"targetname" "cube_addon_catcher_$group_$ind_$next_$connectioncount_$ead_$esd_$cad_$csd"
+	"terminalpoint" "1"
+	"vscripts" "bee2/grayarea_schrodinger.nut"
+	connections
+	{
+		"OnPowered" "!selfCallScriptFunctionoutputOn0-1"
+		"OnUnpowered" "!selfCallScriptFunctionoutputOff0-1"
+	}
+	"origin" "24 0 0"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 2500]"
+	}
+}
+entity
+{
+	"id" "3320"
+	"classname" "info_particle_system"
+	"angles" "0 0 0"
+	"drawinfastreflection" "1"
+	"effect_name" "reflector_start_glow"
+	"parentname" "box"
+	"targetname" "cube_addon_glow"
+	"origin" "0 -0.991098 0"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 0]"
+	}
+}
+cameras
+{
+	"activecamera" "-1"
+}
+cordons
+{
+	"active" "0"
+}

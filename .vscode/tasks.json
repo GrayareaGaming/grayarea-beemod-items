@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Copy Schrodinger Files",
+            "type": "shell",
+            "windows": {
+                "command": "powershell",
+                "args": [
+                    "-Command",
+                    "$srcVmf = \"D:\\SteamLibrary\\steamapps\\common\\Portal 2\\sdk_content\\maps\\instances\\bee2\\grayarea_schrodinger.vmf\"; $destVmf = \"${workspaceFolder}\\resources\\instances\\grayarea_schrodinger.vmf\"; $srcNut = \"D:\\SteamLibrary\\steamapps\\common\\Portal 2\\bee2\\scripts\\vscripts\\BEE2\\grayarea_schrodinger.nut\"; $destNut = \"${workspaceFolder}\\resources\\scripts\\vscripts\\BEE2\\grayarea_schrodinger.nut\"; New-Item -Path (Split-Path -Parent $destVmf) -ItemType Directory -Force; New-Item -Path (Split-Path -Parent $destNut) -ItemType Directory -Force; Copy-Item -Path $srcVmf -Destination $destVmf -Force; Copy-Item -Path $srcNut -Destination $destNut -Force;"
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

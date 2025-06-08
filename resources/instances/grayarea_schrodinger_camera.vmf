@@ -1,0 +1,210 @@
+versioninfo
+{
+	"editorversion" "400"
+	"editorbuild" "7335"
+	"mapversion" "35"
+	"formatversion" "100"
+	"prefab" "0"
+}
+visgroups
+{
+}
+viewsettings
+{
+	"bSnapToGrid" "1"
+	"bShowGrid" "1"
+	"bShowLogicalGrid" "0"
+	"nGridSpacing" "8"
+	"bShow3DGrid" "0"
+}
+world
+{
+	"id" "1"
+	"mapversion" "35"
+	"classname" "worldspawn"
+	"detailmaterial" "detail/detailsprites"
+	"detailvbsp" "detail.vbsp"
+	"maxblobcount" "250"
+	"maxpropscreenwidth" "-1"
+	"skyname" "sky_black_nofog"
+}
+entity
+{
+	"id" "2639"
+	"classname" "point_camera"
+	"angles" "0 0 0"
+	"fogColor" "0 0 0"
+	"fogEnd" "4096"
+	"fogMaxDensity" "1"
+	"fogStart" "2048"
+	"FOV" "60"
+	"parentname" "box"
+	"spawnflags" "0"
+	"targetname" "cube_addon_camera"
+	"origin" "18 0 8"
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1000]"
+	}
+}
+entity
+{
+	"id" "2839"
+	"classname" "func_monitor"
+	"disableflashlight" "0"
+	"disablereceiveshadows" "0"
+	"disableshadowdepth" "0"
+	"disableshadows" "0"
+	"drawinfastreflection" "0"
+	"InputFilter" "0"
+	"invert_exclusion" "0"
+	"origin" "-15.5 0 0"
+	"parentname" "box"
+	"renderamt" "0"
+	"rendercolor" "255 255 255"
+	"renderfx" "0"
+	"rendermode" "3"
+	"shadowdepthnocache" "0"
+	"solidbsp" "0"
+	"Solidity" "1"
+	"spawnflags" "2"
+	"StartDisabled" "0"
+	"targetname" "cube_addon_monitor"
+	"vrad_brush_cast_shadows" "0"
+	solid
+	{
+		"id" "2824"
+		side
+		{
+			"id" "156"
+			"plane" "(-16 16 16) (-15 16 16) (-15 -16 16)"
+			vertices_plus
+			{
+				"v" "-16 16 16"
+				"v" "-15 16 16"
+				"v" "-15 -16 16"
+				"v" "-16 -16 16"
+			}
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[1 0 0 -32] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "155"
+			"plane" "(-16 -16 -16) (-15 -16 -16) (-15 16 -16)"
+			vertices_plus
+			{
+				"v" "-16 -16 -16"
+				"v" "-15 -16 -16"
+				"v" "-15 16 -16"
+				"v" "-16 16 -16"
+			}
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[1 0 0 -32] 0.25"
+			"vaxis" "[0 -1 0 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "154"
+			"plane" "(-16 16 16) (-16 -16 16) (-16 -16 -16)"
+			vertices_plus
+			{
+				"v" "-16 16 16"
+				"v" "-16 -16 16"
+				"v" "-16 -16 -16"
+				"v" "-16 16 -16"
+			}
+			"material" "DEV/DEV_TVMONITOR1A"
+			"uaxis" "[0 1 0 -128] -0.125"
+			"vaxis" "[0 0 -1 -128] 0.125"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "153"
+			"plane" "(-15 16 -16) (-15 -16 -16) (-15 -16 16)"
+			vertices_plus
+			{
+				"v" "-15 16 -16"
+				"v" "-15 -16 -16"
+				"v" "-15 -16 16"
+				"v" "-15 16 16"
+			}
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[0 1 0 -0] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "152"
+			"plane" "(-15 16 16) (-16 16 16) (-16 16 -16)"
+			vertices_plus
+			{
+				"v" "-15 16 16"
+				"v" "-16 16 16"
+				"v" "-16 16 -16"
+				"v" "-15 16 -16"
+			}
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[1 0 0 -32] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		side
+		{
+			"id" "151"
+			"plane" "(-15 -16 -16) (-16 -16 -16) (-16 -16 16)"
+			vertices_plus
+			{
+				"v" "-15 -16 -16"
+				"v" "-16 -16 -16"
+				"v" "-16 -16 16"
+				"v" "-15 -16 16"
+			}
+			"material" "TOOLS/TOOLSNODRAW"
+			"uaxis" "[1 0 0 -32] 0.25"
+			"vaxis" "[0 0 -1 0] 0.25"
+			"rotation" "0"
+			"lightmapscale" "16"
+			"smoothing_groups" "0"
+		}
+		editor
+		{
+			"color" "220 30 220"
+			"visgroupshown" "1"
+			"visgroupautoshown" "1"
+		}
+	}
+	editor
+	{
+		"color" "220 30 220"
+		"visgroupshown" "1"
+		"visgroupautoshown" "1"
+		"logicalpos" "[0 1000]"
+	}
+}
+cameras
+{
+	"activecamera" "-1"
+}
+cordons
+{
+	"active" "0"
+}

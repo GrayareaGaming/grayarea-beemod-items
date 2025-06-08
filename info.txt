@@ -1,0 +1,99 @@
+ "ID"		"GRAYAREA_SCHRODINGER"
+"Name"		"Grayarea's Schrödinger Cube"
+"Desc"      "Grayarea's version of the Schrödinger Cube."
+
+
+"Prerequisites"
+	{
+	"Package"	"VALVE_TEST_ELEM"
+	}
+
+
+"ConfigGroup"
+	{
+	"ID"    "GRAYAREA_SCHRODINGER"
+	"Name"  "Grayarea's Schrödinger Cube"
+	"Widget"
+		{
+		"ID" "GrayareaSchrodingerGuide"
+		"Type" "Dropdown"
+		"Default" "0"
+		"Label" "Targeting Guides"
+		"Tooltip" "Add a beam to make aiming the cubes easier. Guides appear both for the cube being moved as well as any cube that it's connected to. The default is to copy the setting for normal reflector cubes."
+		"Options"
+			{
+			"0"   "Default"
+			"1"   "Enabled"
+			"2"   "Disabled"
+			}
+		}
+	"Widget"
+		{
+		"ID" "GrayareaSchrodingerCamera"
+		"Type" "Checkbox"
+		"Default" "1"
+		"Label" "Camera"
+		"Tooltip" "If enabled, when carrying a cube a monitor will appear showing a view from the connected cube."
+		}
+	"Widget"
+		{
+		"ID" "GrayareaSchrodingerEmitterActivationDelay"
+		"Type" "Slider"
+		"Default" "0"
+		"Min" "0"
+		"Max" "1000"
+		"Step" "10"
+		"Label" "Emitter Activation Delay (ms)"
+		"Tooltip" "The activation delay for the cube's laser emitter in milliseconds."
+		}
+	"Widget"
+		{
+		"ID" "GrayareaSchrodingerEmitterShutdownDelay"
+		"Type" "Slider"
+		"Default" "0"
+		"Min" "0"
+		"Max" "1000"
+		"Step" "10"
+		"Label" "Emitter Shutdown Delay (ms)"
+		"Tooltip" "The shutdown delay for the cube's laser emitter in milliseconds."
+		}
+	"Widget"
+		{
+		"ID" "GrayareaSchrodingerCatcherActivationDelay"
+		"Type" "Slider"
+		"Default" "0"
+		"Min" "0"
+		"Max" "1000"
+		"Step" "10"
+		"Label" "Catcher Activation Delay (ms)"
+		"Tooltip" "The activation delay for the cube's laser catcher in milliseconds."
+		}
+	"Widget"
+		{
+		"ID" "GrayareaSchrodingerCatcherShutdownDelay"
+		"Type" "Slider"
+		"Default" "0"
+		"Min" "0"
+		"Max" "1000"
+		"Step" "10"
+		"Label" "Catcher Shutdown Delay (ms)"
+		"Tooltip" "The shutdown delay for the cube's laser catcher in milliseconds."
+		}
+	}
+
+"Item"
+	{
+	"ID"    "GRAYAREA_SCHRODINGER_CUBE"
+	"Description"
+		{
+		"" "* To place a dropper version, place the item underneath a regular cube dropper, or use the [timer to link them](https://github.com/BEEmod/BEE2-items/wiki/Default-PeTI-Items#cubes)."
+		"" ""
+		}
+	"Version"
+		{
+		"Styles"
+			{
+			"BEE2_CLEAN"     "schrodinger"
+			}
+		}
+	}
