@@ -4,6 +4,8 @@ Currently this collection has just one item: my take on the Schrödinger Cube.
 
 ## Schrödinger Cube
 
+![Schrödinger Cube](./images/schrodinger.jpg)
+
 This cube type was included in the game files of the [Peer Review DLC](https://half-life.fandom.com/wiki/Peer_Review) but was never released in a usable form. It was released in the [Portal Revolution](https://www.portalrevolution.com) mod for Portal 2, and will be native to [P2:CE](https://portal2communityedition.com/).
 
 This take on the Schrödinger Cube essentially behaves like both a laser catcher and emitter which can be connected to or from any item.

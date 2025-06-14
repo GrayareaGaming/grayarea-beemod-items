@@ -22,12 +22,12 @@
             "problemMatcher": []
         },
     {
-      "label": "Zip Workspace",
+      "label": "Package",
       "type": "shell",
       "command": "bash",
       "args": [
         "-c",
-        "rm -f grayarea_packages_v${input:version}.bee_pack; 7z a -tzip grayarea_packages_v${input:version}.bee_pack . -xr\\!.\\* -r"
+        "rm -f grayarea_packages_v${input:version}.bee_pack; 7z a -tzip grayarea_packages_v${input:version}.bee_pack . -xr\\!.\\* -xr\\!images -xr\\!README.md -r"
       ],
       "group": "build",
       "presentation": {
