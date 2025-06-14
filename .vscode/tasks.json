@@ -20,6 +20,33 @@
                 "panel": "new"
             },
             "problemMatcher": []
+        },
+    {
+      "label": "Zip Workspace",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-c",
+        "rm -f grayarea_packages_v${input:version}.bee_pack; 7z a -tzip grayarea_packages_v${input:version}.bee_pack . -xr\\!.\\* -r"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+      "problemMatcher": []
+    }
+    ],
+    "inputs": [
+        {
+        "id": "version",
+        "type": "promptString",
+        "description": "Enter the version number (e.g., 1.0)",
+        "default": "1.0"
         }
     ]
 }
