@@ -1,13 +1,12 @@
 if (!("ga_schrd_scopes" in getroottable())) {
     ::ga_schrd_scopes <- {};  // Global table to store all entity scopes by self_key
     ::ga_schrd_inputs <- {};  // Global table to store all input $ind numbers by self_key
+    ::ga_schrd_emitters <- {}; // Global table to store all emitter entities by self_key
     ::GASchrd <- function(entity) {
         local inst = split(entity.GetName(), "-")[0];
-        printl("GASchrd called: " + inst);
         if (inst in ::ga_schrd_scopes) {
             local s = ::ga_schrd_scopes[inst].selfScope();
             if (s) {
-                printl("Returning scope for " + s.self.GetName());
                 return s;
             } else {
                 printl("No selfScope found for entity: " + entity.GetName());
@@ -20,61 +19,17 @@ if (!("ga_schrd_scopes" in getroottable())) {
 }
 
 local name = self.GetName();
-local re = regexp(@"^([^\-\s]+)-cube_addon_catcher_([^_]+)_([^_]+)_([^_]+)_([^_]+)_([^_]+)_([^_]+)_([^_]+)_([^_&]+)(&.+)?$");
-local match = re.capture(name);
+// set inst_fixup to the name up to the first hyphen
+inst_fixup <- split(name, "-_")[0];
+local i = name.find("&");
+id <- i == null ? "" : name.slice(i);
 
-if (match != null) {
-    inst_fixup <- name.slice(match[1].begin, match[1].end);
-    inst_name <- "cube_addon_catcher";
-    group <- name.slice(match[2].begin, match[2].end);
-    ind <- name.slice(match[3].begin, match[3].end);
-    next <- name.slice(match[4].begin, match[4].end);
-    connectioncount <- name.slice(match[5].begin, match[5].end).tointeger();
-    input_on_delay <- name.slice(match[6].begin, match[6].end).tofloat();
-    input_off_delay <- name.slice(match[7].begin, match[7].end).tofloat();
-    output_on_delay <- name.slice(match[8].begin, match[8].end).tofloat();
-    output_off_delay <- name.slice(match[9].begin, match[9].end).tofloat();
-    id <- match[10] != null ? name.slice(match[10].begin, match[10].end) : "";
-    printl(
-        "Parsed: inst_fixup=" + inst_fixup + ", inst_name=" + inst_name + ", group=" + group + ", ind=" + ind + ", next=" + next +
-        ", connectioncount=" + connectioncount + ", input_on_delay=" + input_on_delay +
-        ", input_off_delay=" + input_off_delay + ", output_on_delay=" + output_on_delay +
-        ", output_off_delay=" + output_off_delay + ", id=" + id
-    );
-} else {
-    // Debugging: Split the name to show components
-    local parts = split(name, "-_");
-    local debugMsg = "Invalid entity name format: " + name + "\nComponents: ";
-    foreach (i, part in parts) {
-        debugMsg += part + (i < parts.len() - 1 ? ", " : "");
-    }
-    throw debugMsg;
-}
-printl(group + "/" + ind + "/" + next + "/" + connectioncount + "/" + id);
-self_key <- group + "_" + ind;
-next_key <- group + "_" + next;
-box_target <- inst_fixup + "-box" + id;
-box <- Entities.FindByName(null, box_target);
-printl("box_target: " + box_target + " " + box);
-// player <- Entities.FindByClassname(null, "player");
-// DoEntFire("@grayarea_schr_camera_" + group + "_" + ind, "SetParent", inst_fixup + "-box", 0, null, null);
-// self_camera_target <- "@grayarea_schr_camera_" + group + "_" + ind;
-// next_camera_target <- "@grayarea_schr_camera_" + group + "_" + next;
-// camera <- null;
 camera <- null;
 monitor <- null;
 blocker <- null;
 glow <- null;
 emitter <- null;
-// self_controller_name <- "@grayarea_schr_controller_" + group + "_" + ind;
-// self_controller <- null;
-// next_controller_name <- "@grayarea_schr_controller_" + group + "_" + next;
-// next_controller <- null;
-// self.SetSize(Vector(-0.05,-0.05,-0.05), Vector(0.05,0.05,0.05));
 EntFireByHandle(self, "RunScriptCode", "self.SetSize(Vector(-0.05,-0.05,-0.05), Vector(0.05,0.05,0.05))", 0, null, null);
-// printl("@grayarea_schr_camera_" + group + "_" + next + " = " + camera);
-// box_angles <- null;
-// player_angles <- null;
 monitor_alpha <- 0;
 next_camera <- null;
 guide <- null;
@@ -87,49 +42,48 @@ output_thread <- 0;
 output_fired <- false;
 input_count <- 0;
 move_thread <- 0;
-logic_and <- true; // determines whether all inputs or any input must be activated.
-// blocker_enabled <- true;
+input_box <- null;
 
-function selfScope() {
-    if(self_key in ::ga_schrd_scopes) {
-        return ::ga_schrd_scopes[self_key];
+function spawn(options = {}) {
+    // Fixups are all passed via the blocker OnUser1 output and get assigned to the script scope.
+    local s = self.GetScriptScope();
+    foreach(key, val in options)
+        s[key] <- val;
+    start_enabled = !!start_enabled;
+    start_active = !!start_active;
+    start_reversed = !!start_reversed;
+    trace_log = !!trace_log;
+    trace <- trace_log ? printl : function(msg) { };
+    self_key <- group + "_" + ind;
+    next_key <- group + "_" + next;
+    if(trace_log) {
+        trace(self_key + id + "_spawn, options:");
+        __DumpScope(1, options);
     }
-}
-
-function nextScope() {
-    if(next_key in ::ga_schrd_scopes) {
-        return ::ga_schrd_scopes[next_key];
-    }
-}
-
-function spawn() {
-    printl(self_key + id + "_spawn");
-    if(box == null) {
-        printl("Box not found: " + box_target);
-        return;
-    }
+    box_target <- inst_fixup + "-box" + id;
+    box <- Entities.FindByName(null, box_target);
+    if(box == null)
+        throw "Box not found: " + box_target;
+    trace("box_target: " + box_target + " " + box);
+    logic_and <- !start_active; // determines whether all inputs or any input must be activated.
     EntFireByHandle(self, "SetParent", box_target, 0, null, null);
 }
 
 function droppered() {
-    printl(self_key + id + "_droppered");
+    trace(self_key + id + "_droppered");
     local emitter_target = inst_fixup + "-cube_addon_emitter";
     emitter = entLib.FindByName(emitter_target);
-    camera = entLib.FindByName(inst_fixup + "-cube_addon_camera");
-    monitor = entLib.FindByName(inst_fixup + "-cube_addon_monitor");
     blocker = entLib.FindByName(inst_fixup + "-cube_addon_blocker" + id);
     glow = entLib.FindByName(inst_fixup + "-cube_addon_glow");
-    if(id == "") {
-        // We're an original/non-replacement cube.
-        printl("Emitter: " + emitter);
-        startMove();
-    } else {
+    if(self_key in ga_schrd_emitters) {
         // We're a replacement cube. Take over the original emitter and input state.
-        emitter.Kill();
+        // trace("Emitter target: " + emitter_target + ", emitter: " + (emitter ? emitter.IsValid() ? "valid" : "invalid" : "null"));
+        // emitter.Kill();
+        DoEntFire(emitter_target, "Kill", "", 1, null, null);
+        emitter = ga_schrd_emitters[self_key];
         local s = selfScope();
-        emitter = s.emitter;
         s.emitter = null;
-        printl("Taking over emitter: " + emitter + " and killing " + emitter_target);
+        trace("Taking over emitter: " + emitter + " and killing " + emitter_target);
         input_count = s.input_count;
         if(s.input) {
             input_count -= 1;
@@ -137,6 +91,11 @@ function droppered() {
         } else {
             startMove();
         }
+    } else {
+        // We're an original/non-replacement cube.
+        trace("Emitter: " + emitter);
+        startMove();
+        ga_schrd_emitters[self_key] <- emitter;
     }
     local scope = self.GetScriptScope();
     if(ind != "$ind" && next != "$next" && !(self_key in ga_schrd_scopes)) {
@@ -149,11 +108,32 @@ function droppered() {
     }
     ga_schrd_scopes[self_key] <- scope;
     ga_schrd_scopes[inst_fixup] <- scope;
+    if(!start_reversed) {
+        local ns = nextScope();
+        if(ns && box && box.IsValid())
+            ns.setInputBox(box);
+    }
+    if(self_key in ga_schrd_inputs) {
+        local inputs = ga_schrd_inputs[self_key];
+        for(local i = 0; i < inputs.len(); i++) {
+            local prev_key = group + "_" + inputs[i];
+            if(prev_key in ga_schrd_scopes) {
+                local ps = ga_schrd_scopes[prev_key];
+                if(ps) {
+                    if("start_reversed" in ps && !ps.start_reversed && "box" in ps) {
+                        local box = ps.box;
+                        if(box && box.IsValid())
+                            setInputBox(box);
+                    }
+                }
+            }
+        }
+    }
     guide = entLib.FindByName(inst_fixup + "-cube_addon_ref_cube_las");
     if(guide) {
-        local sprite_name = inst_fixup + "-cube_addon_ref_cube_las_spr";
+        local sprite_name = inst_fixup + "-cube_addon_ref_cube_las_spr" + id;
         local sprite = entLib.FindByName(sprite_name);
-        local target_name = inst_fixup + "-cube_addon_ref_cube_las_targ";
+        local target_name = inst_fixup + "-cube_addon_ref_cube_las_targ" + id;
         local target = entLib.FindByName(target_name);
         if(sprite) {
             EntFireByHandle(sprite, "SetLocalOrigin", "20 0 0", 0.01, null, null);
@@ -166,10 +146,33 @@ function droppered() {
             printl("Target not found: " + target_name);
         }
     }
+    if(start_enabled) {
+        trace(self_key + id + "_start enabled");
+        input = true;
+        fireInput(0.01);
+    }
 }
 
 function fizzle() {
-    printl(self_key + id + "_fizzle");
+    trace(self_key + id + "_fizzle");
+    if(!start_reversed) {
+        local ns = nextScope();
+        if(ns) {
+            trace("Fizzling, calling nextScope.kill()");
+            ns.kill();
+        }
+    }
+}
+
+function kill() {
+    trace(self_key + id + "_kill");
+    if(box)
+        EntFireByHandle(box, "dissolve", "", 0, null, null);
+}
+
+function setInputBox(box) {
+    trace(self_key + id + "_setInputBox: " + box.GetName());
+    input_box <- box;
 }
 
 /**
@@ -184,13 +187,14 @@ function startMove() {
 }
 
 function move(thread) {
-    if(!emitter) {
-        // Waiting in dropper.
-        // printl("Emitter not found, waiting in dropper.");
-        moveAfter(thread, 1);
+    if(!emitter || !emitter.IsValid() || !box || !box.IsValid())
+        return;
+    // trace(self_key + id + "_move, input_box: " + (input_box ? input_box.IsValid() ? "valid" : "invalid" : "null"));
+    if(input_box && !input_box.IsValid()) {
+        kill();
         return;
     }
-    // printl("Emitter: " + emitter.GetName() + ", box: " + box.GetName());
+    // trace("Emitter: " + emitter.GetName() + ", box: " + box.GetName());
     local bo = box.GetOrigin();
     local ba = box.GetAngles();
 
@@ -215,7 +219,7 @@ function move(thread) {
     );
     emitter.SetOrigin(newOrigin);
     emitter.SetAngles(ba.x, ba.y, ba.z);
-    moveAfter(thread, input ? 0.015 : 1); // 66Hz if input is on, otherwise 1 second
+    moveAfter(thread, input ? 0.015 : 0.5); // 66Hz if input is on, otherwise 2Hz.
 }
 
 function moveAfter(thread, delay) {
@@ -225,16 +229,17 @@ function moveAfter(thread, delay) {
 }
 
 function pickup() {
-    printl(self_key + id + "_pickup");
+    trace(self_key + id + "_pickup");
     guideOn();
     local ns = nextScope();
     if(ns) {
         next_camera = ns.activateCamera();
-        if(next_camera) {
-            printl("Setting monitor target to " + next_camera.GetName());
+        if(next_camera && next_camera.IsValid()) {
+            trace("Setting monitor target to " + next_camera.GetName());
+            monitor = entLib.FindByName(inst_fixup + "-cube_addon_monitor");
             EntFireByHandle(monitor, "SetCamera", next_camera.GetName(), 0, null, null);
         } else {
-            printl("No next camera found");
+            trace("No next camera found");
         }
         ns.guideOn();
     }
@@ -243,10 +248,11 @@ function pickup() {
 }
 
 function _check() {
-    if(!held && (!next_camera || monitor_alpha == 0))
+    local has_camera = next_camera && next_camera.IsValid();
+    if(!held && (!has_camera || monitor_alpha == 0))
         return;
-    if(next_camera) {
-        // printl("held " + held + ", monitor_alpha " + monitor_alpha);
+    if(has_camera) {
+        // trace("held " + held + ", monitor_alpha " + monitor_alpha);
         if(held) {
             monitor_alpha += 50;
             if(monitor_alpha > 255) {
@@ -258,7 +264,7 @@ function _check() {
                 monitor_alpha = 0;
             }
         }
-        // printl("monitor_alpha: " + monitor_alpha);
+        // trace("monitor_alpha: " + monitor_alpha);
         EntFireByHandle(monitor, "AddOutput", "renderamt " + monitor_alpha, 0, null, null);
     }
     EntFireByHandle(self, "CallScriptFunction", "_check", 0.1, self, self);
@@ -266,12 +272,14 @@ function _check() {
 
 function incrementConnectionCount() {
     connectioncount += 1;
-    printl(self_key + id + "_incrementConnectionCount: " + connectioncount);
+    trace(self_key + id + "_incrementConnectionCount: " + connectioncount);
 }
 
 function activateCamera() {
-    printl(self_key + id + "_activateCamera");
-    if(camera) {
+    camera = entLib.FindByName(inst_fixup + "-cube_addon_camera");
+    monitor = entLib.FindByName(inst_fixup + "-cube_addon_monitor");
+    trace(self_key + id + "_activateCamera " + (camera ? camera.IsValid() ? "valid" : "invalid" : "null"));
+    if(camera && camera.IsValid()) {
         EntFireByHandle(camera, "ChangeFOV", "40 0.4", 0, null, null);
         EntFireByHandle(camera, "SetOnAndTurnOthersOff", "", 0, null, null);
     } else {
@@ -281,13 +289,14 @@ function activateCamera() {
 }
 
 function setCameraFOV(fov, time) {
-    printl(self_key + id + "_setCameraFOV " + fov + " " + time);
-    if(camera)
+    camera = entLib.FindByName(inst_fixup + "-cube_addon_camera");
+    trace(self_key + id + "_setCameraFOV " + fov + " " + time + " " + (camera ? camera.IsValid() ? "valid" : "invalid" : "null"));
+    if(camera && camera.IsValid())
         EntFireByHandle(camera, "ChangeFOV", fov + " " + time, 0, null, null);
 }
 
 function drop() {
-    printl(self_key + id + "_drop");
+    trace(self_key + id + "_drop");
     held = false;
     guideOff();
     local ns = nextScope();
@@ -298,13 +307,14 @@ function drop() {
 }
 
 function guideOn() {
-    if(guide) {
+    guide = entLib.FindByName(inst_fixup + "-cube_addon_ref_cube_las");
+    if(guide && guide.IsValid())
         EntFireByHandle(guide, "FireUser2", "", 0, null, null);
-    }
 }
 
 function guideOff() {
-    if(guide)
+    guide = entLib.FindByName(inst_fixup + "-cube_addon_ref_cube_las");
+    if(guide && guide.IsValid())
         EntFireByHandle(guide, "FireUser1", "", 0, null, null);
 }
 
@@ -320,9 +330,9 @@ function inputOn() {
     local total = totalInputs();
     input_count += 1;
     input_count = input_count > total ? total : input_count;
-    printl(self_key + id + "_inputOn " + input_count + "/" + total);
-    if(!input && (logic_and ? input_count == total : input_count > 0)) {
-        input = true;
+    trace(self_key + id + "_inputOn " + input_count + "/" + total + ", logic_and: " + logic_and + ", start_enabled: " + start_enabled + ", input: " + input);
+    if(input == start_enabled && (logic_and ? input_count == total : input_count > 0)) {
+        input = !start_enabled;
         fireInput(input_on_delay / 1000);
     }
 }
@@ -331,9 +341,9 @@ function inputOff() {
     local total = totalInputs();
     input_count -= 1;
     input_count = input_count < 0 ? 0 : input_count;
-    printl(self_key + id + "_inputOff" + " " + input_count + "/" + total);
-    if(input && (logic_and ? input_count < total : input_count == 0)) {
-        input = false;
+    trace(self_key + id + "_inputOff" + " " + input_count + "/" + total);
+    if(input == !start_enabled && (logic_and ? input_count < total : input_count == 0)) {
+        input = start_enabled;
         fireInput(input_off_delay / 1000);
     }
 }
@@ -343,7 +353,7 @@ function fireInput(delay, thread = null) {
         input_thread += 1;
         thread = input_thread;
     }
-    printl(self_key + id + "_fireInput " + input + ", delay: " + delay + ", thread: " + thread);
+    trace(self_key + id + "_fireInput " + input + ", delay: " + delay + ", thread: " + thread);
     if(delay > 0) {
         EntFireByHandle(self, "RunScriptCode", "fireInput(0, " + thread + ")", delay, self, self);
     } else if(thread == input_thread) {
@@ -365,13 +375,13 @@ function fireInput(delay, thread = null) {
 }
 
 function outputOn() {
-    printl(self_key + id + "_outputOn");
+    trace(self_key + id + "_outputOn");
     output = true;
     fireOutput(output_on_delay / 1000);
 }
 
 function outputOff() {
-    printl(self_key + id + "_outputOff");
+    trace(self_key + id + "_outputOff");
     output = false;
     fireOutput(output_off_delay / 1000);
 }
@@ -381,7 +391,7 @@ function fireOutput(delay, thread = null) {
         output_thread += 1;
         thread = output_thread;
     }
-    printl(self_key + id + "_fireOutput " + output + ", delay: " + delay + ", thread: " + thread);
+    trace(self_key + id + "_fireOutput " + output + ", delay: " + delay + ", thread: " + thread);
     if(delay > 0) {
         EntFireByHandle(self, "RunScriptCode", "fireOutput(0, " + thread + ")", delay, self, self);
     } else if(thread == output_thread) {
@@ -410,31 +420,41 @@ function fireOutput(delay, thread = null) {
 //     if(enabled) {
 //         if(!blocker_enabled) {
 //             blocker_enabled = true;
-//            printl("EntFireByHandle call, target: " + (blocker != null ? blocker.GetName() : "null") + ", action: Enable");
+//            trace("EntFireByHandle call, target: " + (blocker != null ? blocker.GetName() : "null") + ", action: Enable");
 //             EntFireByHandle(blocker, "Enable", "", 0, null, null);
-//             printl(self_key + id + "_blocker enabled");
+//             trace(self_key + id + "_blocker enabled");
 //         }
 //     } else {
 //         if(blocker_enabled) {
 //             blocker_enabled = false;
-//             printl("EntFireByHandle call, target: " + (blocker != null ? blocker.GetName() : "null") + ", action: Disable");
+//             trace("EntFireByHandle call, target: " + (blocker != null ? blocker.GetName() : "null") + ", action: Disable");
 //             EntFireByHandle(blocker, "Disable", "", 0, null, null);
-//             printl(self_key + id + "_blocker disabled");
+//             trace(self_key + id + "_blocker disabled");
 //         }
 //     }
 // }
 function updateBlocker() {
     if(input) {
-        printl(self_key + id + "_blocker disabled");
-        // printl("EntFireByHandle call, target: " + (blocker != null ? blocker.GetName() : "null") + ", action: Disable");
+        trace(self_key + id + "_blocker disabled");
+        // trace("EntFireByHandle call, target: " + (blocker != null ? blocker.GetName() : "null") + ", action: Disable");
         // EntFireByHandle(blocker, "Disable", "", 0, null, null);
-        printl("Blocker: " + blocker);
+        trace("Blocker: " + blocker);
         blocker.Disable();
     } else {
-        printl(self_key + id + "_blocker enabled");
-        printl("Blocker: " + blocker);
+        trace(self_key + id + "_blocker enabled");
+        trace("Blocker: " + blocker);
         blocker.Enable();
-        // printl("EntFireByHandle call, target: " + (blocker != null ? blocker.GetName() : "null") + ", action: Enable");
+        // trace("EntFireByHandle call, target: " + (blocker != null ? blocker.GetName() : "null") + ", action: Enable");
         // EntFireByHandle(blocker, "Enable", "", 0, null, null);
     }
+}
+
+function selfScope() {
+    if(self_key in ::ga_schrd_scopes)
+        return ::ga_schrd_scopes[self_key];
+}
+
+function nextScope() {
+    if(next_key in ::ga_schrd_scopes)
+        return ::ga_schrd_scopes[next_key];
 }

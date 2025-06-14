@@ -1,0 +1,14 @@
+{
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        "match": "grayarea_schrodinger\\.vmf$",
+        "cmd": "powershell -Command \"$src = '${file}'; $dest = 'D:\\SteamLibrary\\steamapps\\common\\Portal 2\\sdk_content\\maps\\instances\\bee2\\grayarea_schrodinger.vmf'; New-Item -Path (Split-Path -Parent $dest) -ItemType Directory -Force; Copy-Item -Path $src -Destination $dest -Force;\""
+      },
+      {
+        "match": "grayarea_schrodinger\\.nut$",
+        "cmd": "powershell -Command \"$src = '${file}'; $dest = 'D:\\SteamLibrary\\steamapps\\common\\Portal 2\\bee2\\scripts\\vscripts\\BEE2\\grayarea_schrodinger.nut'; New-Item -Path (Split-Path -Parent $dest) -ItemType Directory -Force; Copy-Item -Path $src -Destination $dest -Force;\""
+      }
+    ]
+  }
+}

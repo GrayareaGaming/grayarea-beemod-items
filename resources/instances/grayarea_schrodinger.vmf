@@ -102,7 +102,7 @@ entity
 	"id" "1376"
 	"classname" "env_portal_laser"
 	"angles" "0 0 0"
-	"AutoAimEnabled" "1"
+	"AutoAimEnabled" "$autoaim"
 	"drawinfastreflection" "1"
 	"model" "models/editor/axis_helper.mdl"
 	"renderamt" "255"
@@ -147,8 +147,8 @@ entity
 	"vrad_brush_cast_shadows" "0"
 	connections
 	{
-		"OnUser1" "cube_addon_catcher_$group_$ind_$next_$connectioncount_$ead_$esd_$cad_$csdCallScriptFunctionspawn0-1"
-		"OnUser2" "cube_addon_catcher_$group_$ind_$next_$connectioncount_$ead_$esd_$cad_$csdCallScriptFunctiondroppered0-1"
+		"OnUser1" "cube_addon_catcherRunScriptCodespawn({start_enabled=$start_enabled,start_active=$start_active,start_reversed=$start_reversed,group=`$group`,ind=`$ind`,next=`$next`,connectioncount=$connectioncount,input_on_delay=$input_on_delay,input_off_delay=$input_off_delay,output_on_delay=$output_on_delay,output_off_delay=$output_off_delay,trace_log=$tl})0-1"
+		"OnUser2" "cube_addon_catcherCallScriptFunctiondroppered0.5-1"
 	}
 	solid
 	{
@@ -280,7 +280,7 @@ entity
 {
 	"id" "3119"
 	"classname" "point_laser_target"
-	"targetname" "cube_addon_catcher_$group_$ind_$next_$connectioncount_$ead_$esd_$cad_$csd"
+	"targetname" "cube_addon_catcher"
 	"terminalpoint" "1"
 	"vscripts" "bee2/grayarea_schrodinger.nut"
 	connections
