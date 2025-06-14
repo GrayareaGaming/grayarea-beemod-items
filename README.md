@@ -20,7 +20,7 @@ Other connection patterns are also supported, such as loops (A → B → C → A
 - _Start Reversed_ causes the cube to _not_ fizzle the cube it's connected to when fizzled itself.
 - To place a dropper version, place the item underneath a regular cube dropper, or use the [timer to link them](https://github.com/BEEmod/BEE2-items/wiki/Default-PeTI-Items#cubes).
 - The _Cube Coloriser_ is supported, although the effect is subtle. Due to a known issue, it may be necessary to edit at least one color in _Item Properties_ for this to work.
-- The cube's laser emitter follows the _Laser Auto-Aim_ property in _Default Test Elements_. It's recommended to turn this off due to these cube containing a laser catcher.
+- The cube's laser emitter follows the _Laser Auto-Aim_ property in _Default Test Elements_. It's recommended to turn this off due to these cubes containing a laser catcher.
 
 ### Technique Used
 
