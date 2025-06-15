@@ -43,6 +43,7 @@ output_fired <- false;
 input_count <- 0;
 move_thread <- 0;
 input_box <- null;
+trace <- function(msg) { };
 
 function spawn(options = {}) {
     // Fixups are all passed via the blocker OnUser1 output and get assigned to the script scope.
@@ -53,7 +54,8 @@ function spawn(options = {}) {
     start_active = !!start_active;
     start_reversed = !!start_reversed;
     trace_log = !!trace_log;
-    trace <- trace_log ? printl : function(msg) { };
+    if(trace_log)
+        trace = printl;
     self_key <- group + "_" + ind;
     next_key <- group + "_" + next;
     if(trace_log) {

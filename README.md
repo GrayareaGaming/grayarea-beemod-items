@@ -10,7 +10,7 @@ This cube type was included in the game files of the [Peer Review DLC](https://h
 
 This take on the Schrödinger Cube essentially behaves like both a laser catcher and emitter which can be connected to or from any item.
 
-To create the traditional pair of Schrödinger Cubes, connect each cube to its partner (A → B and B → A).
+To create the traditional pair of Schrödinger Cubes, connect each cube to its partner (A → B and B → A). Set _Connection visibility_ to _None_.
 
 Other connection patterns are also supported, such as loops (A → B → C → A), using the cube as a catcher connected to a bridge/funnel, or as a portable laser activated by a button or other item.
 
@@ -18,7 +18,7 @@ Other connection patterns are also supported, such as loops (A → B → C → A
 - _Start Enabled_ flips the laser emitter state as with a normal emitter.
 - _Start Active_ changes the input logic from AND (the default) to OR. When set, any input to the cube will activate the laser emitter.
 - _Start Reversed_ causes the cube to _not_ fizzle the cube it's connected to when fizzled itself.
-- To place a dropper version, place the item underneath a regular cube dropper, or use the [timer to link them](https://github.com/BEEmod/BEE2-items/wiki/Default-PeTI-Items#cubes).
+- To place a dropper version, use the [timer to link them](https://github.com/BEEmod/BEE2-items/wiki/Default-PeTI-Items#cubes). Note: placing the cube under a dropper without using timer linkage currently does not work due to a BEE issue.
 - The _Cube Coloriser_ is supported, although the effect is subtle. Due to a known issue, it may be necessary to edit at least one color in _Item Properties_ for this to work.
 - The cube's laser emitter follows the _Laser Auto-Aim_ property in _Default Test Elements_. It's recommended to turn this off due to these cubes containing a laser catcher.
 
