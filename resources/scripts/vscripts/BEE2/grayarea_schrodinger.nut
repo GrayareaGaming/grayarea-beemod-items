@@ -305,6 +305,9 @@ function drop() {
     if(ns) {
         ns.setCameraFOV(70, 1);
         ns.guideOff();
+        if(next_camera && next_camera.IsValid()) {
+            DoEntFire("@camera", "SetOnAndTurnOthersOff", "", 0, null, null);
+        }
     }
 }
 
@@ -356,6 +359,10 @@ function fireInput(delay, thread = null) {
         thread = input_thread;
     }
     trace(self_key + id + "_fireInput " + input + ", delay: " + delay + ", thread: " + thread);
+    if(emitter == null) {
+        trace("Pre-droppered. delaying...");
+        delay = 0.1;
+    }
     if(delay > 0) {
         EntFireByHandle(self, "RunScriptCode", "fireInput(0, " + thread + ")", delay, self, self);
     } else if(thread == input_thread) {
@@ -394,6 +401,10 @@ function fireOutput(delay, thread = null) {
         thread = output_thread;
     }
     trace(self_key + id + "_fireOutput " + output + ", delay: " + delay + ", thread: " + thread);
+    if(emitter == null) {
+        trace("Pre-droppered. delaying...");
+        delay = 0.1;
+    }
     if(delay > 0) {
         EntFireByHandle(self, "RunScriptCode", "fireOutput(0, " + thread + ")", delay, self, self);
     } else if(thread == output_thread) {
