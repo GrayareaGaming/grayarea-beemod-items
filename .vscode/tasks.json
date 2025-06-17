@@ -27,7 +27,7 @@
       "command": "bash",
       "args": [
         "-c",
-        "rm -f grayarea_packages_v${input:version}.bee_pack; 7z a -tzip grayarea_packages_v${input:version}.bee_pack . -xr\\!.\\* -xr\\!images -xr\\!README.md -r"
+        "rm -f grayarea_packages.bee_pack; 7z a -tzip grayarea_packages.bee_pack . -xr\\!.\\* -xr\\!images -xr\\!README.md -xr\\!\\*.bee_pack -r"
       ],
       "group": "build",
       "presentation": {
