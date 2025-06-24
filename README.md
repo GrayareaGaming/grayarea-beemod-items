@@ -18,7 +18,7 @@ Other connection patterns are also supported, such as loops (A → B → C → A
 - _Start Enabled_ flips the laser emitter state as with a normal emitter.
 - _Start Active_ changes the input logic from AND (the default) to OR. When set, any input to the cube will activate the laser emitter.
 - _Start Reversed_ causes the cube to _not_ fizzle the cube it's connected to when fizzled itself.
-- To place a dropper version, use the [timer to link them](https://github.com/BEEmod/BEE2-items/wiki/Default-PeTI-Items#cubes). Note: placing the cube under a dropper without using timer linkage currently does not work due to a BEE issue.
+- To place a dropper version, use the [timer to link them](https://github.com/BEEmod/BEE2-items/wiki/Default-PeTI-Items#cubes). **Do not** connect the cube to the dropper. This will cause the cube to fizzle when activated by a laser. Note: placing the cube under a dropper without using timer linkage currently does not work due to a BEE issue.
 - The _Cube Coloriser_ is supported, although the effect is subtle. Due to a known issue, it may be necessary to edit at least one color in _Item Properties_ for this to work.
 - The cube's laser emitter follows the _Laser Auto-Aim_ property in _Default Test Elements_. It's recommended to turn this off due to these cubes containing a laser catcher.
 
